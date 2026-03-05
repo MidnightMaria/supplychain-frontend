@@ -1,0 +1,37 @@
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.product-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+.product-form button {
+  padding: 10px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.product-form button:hover {
+  background: #1a252f;
+}
+
+button {
+  padding: 10px 15px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+button:hover {
+  background: #1a252f;
+}
