@@ -53,10 +53,10 @@ export default function WarehouseForm({
 
     try {
       if (isEdit && initialData?.id) {
-        await updateWarehouse(initialData.id, payload);
+        await updateWarehouse(initialData.id, payload as Warehouse);
         router.push(`/inventory/warehouses/${initialData.id}`);
       } else {
-        const created = await createWarehouse(payload);
+        const created = await createWarehouse(payload as Warehouse);
         router.push(`/inventory/warehouses/${created.id}`);
       }
 
