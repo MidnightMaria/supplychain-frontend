@@ -49,7 +49,12 @@ export default function WarehouseForm({
         });
         router.push(`/inventory/warehouses/${initialData.id}`);
       } else {
-        const created = await createWarehouse(payload);
+        const created = await createWarehouse({
+          ...payload,
+          address: payload.address ?? undefined,
+          latitude: payload.latitude ?? undefined,
+          longitude: payload.longitude ?? undefined,
+        });
         router.push(`/inventory/warehouses/${created.id}`);
       }
 
