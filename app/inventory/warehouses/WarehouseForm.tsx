@@ -93,7 +93,7 @@ export default function WarehouseForm({
           label="Latitude"
           value={form.latitude}
           onChange={(v) =>
-            setForm({ ...form, latitude: Number(v) })
+            setForm({ ...form, latitude: v })
           }
         />
 
