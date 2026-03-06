@@ -1,5 +1,7 @@
 import { getRetailWarehouses, getProducts } from "@/lib/retailApi";
 
+export const dynamic = "force-dynamic";
+
 export default async function RetailDashboard() {
   const warehouses = await getRetailWarehouses();
   const products = await getProducts();
