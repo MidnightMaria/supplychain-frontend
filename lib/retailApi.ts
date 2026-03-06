@@ -1,5 +1,18 @@
-const BASE_URL =
-  process.env.NEXT_PUBLIC_RETAIL_API_URL || "http://retail-service:8081/api";
+const BASE_URL = "http://retail-service:8081/api";
+
+export async function getRetailWarehouses() {
+  const res = await fetch(`${BASE_URL}/retail/warehouses`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    console.error("API ERROR:", text);
+    throw new Error("Failed to fetch warehouses");
+  }
+
+  return res.json();
+}
 
 export async function getRetailWarehouses() {
   const res = await fetch(`${BASE_URL}/retail/warehouses`, {
