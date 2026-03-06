@@ -1,5 +1,5 @@
 const BASE_URL =
-  process.env.NEXT_PUBLIC_RETAIL_API_URL || "http://localhost:8081/api";
+  process.env.NEXT_PUBLIC_RETAIL_API_URL || "http://retail-service:8081/api";
 
 export async function getRetailWarehouses() {
   const res = await fetch(`${BASE_URL}/retail/warehouses`, {
