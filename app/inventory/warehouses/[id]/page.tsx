@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getWarehouse } from "@/lib/warehouse-api";
 import EditButton from "./EditButton";
 import DeleteButton from "../DeleteWarehouseButton";
