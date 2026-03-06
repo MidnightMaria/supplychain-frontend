@@ -41,7 +41,10 @@ export default function WarehouseForm({
 
     try {
       if (isEdit && initialData) {
-        await updateWarehouse(initialData.id, payload);
+        await updateWarehouse(initialData.id, {
+          ...payload,
+          address: payload.address ?? undefined
+        });
         router.push(`/inventory/warehouses/${initialData.id}`);
       } else {
         const created = await createWarehouse(payload);
