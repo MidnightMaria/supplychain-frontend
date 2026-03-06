@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getWarehouses } from "@/lib/warehouse-api";
 import WarehouseTable from "./WarehouseTable";
 import Link from "next/link";
