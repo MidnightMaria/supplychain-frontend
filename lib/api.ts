@@ -1,4 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_INVENTORY_API;
+const API_URL =
+  process.env.NEXT_PUBLIC_INVENTORY_API || "http://inventory-service:8080";
 
 export async function fetcher(url: string, options?: RequestInit) {
   const res = await fetch(`${API_URL}${url}`, {
