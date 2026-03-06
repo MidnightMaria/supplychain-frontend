@@ -38,7 +38,7 @@ export default function WarehouseForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const payload: Warehouse = {
+    const payload: Partial<Warehouse> = {
       code: form.code,
       name: form.name,
       address: form.address || undefined,
