@@ -43,7 +43,9 @@ export default function WarehouseForm({
       if (isEdit && initialData) {
         await updateWarehouse(initialData.id, {
           ...payload,
-          address: payload.address ?? undefined
+          address: payload.address ?? undefined,
+          latitude: payload.latitude ?? undefined,
+          longitude: payload.longitude ?? undefined
         });
         router.push(`/inventory/warehouses/${initialData.id}`);
       } else {
