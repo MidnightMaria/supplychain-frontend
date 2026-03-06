@@ -8,6 +8,15 @@ import {
 } from "@/lib/warehouse-api";
 import { Warehouse } from "@/types/warehouse";
 
+type WarehouseFormType = {
+  code: string;
+  name: string;
+  address: string;
+  latitude: string;
+  longitude: string;
+  isActive: boolean;
+};
+
 export default function WarehouseForm({
   initialData,
   isEdit,
@@ -17,49 +26,42 @@ export default function WarehouseForm({
 }) {
   const router = useRouter();
 
-  const [form, setForm] = useState(
-    initialData || {
-      code: "",
-      name: "",
-      address: "",
-      latitude: "",
-      longitude: "",
-      isActive: true,
-    }
-  );
+  const [form, setForm] = useState<WarehouseFormType>({
+    code: initialData?.code || "",
+    name: initialData?.name || "",
+    address: initialData?.address || "",
+    latitude: initialData?.latitude?.toString() || "",
+    longitude: initialData?.longitude?.toString() || "",
+    isActive: initialData?.isActive ?? true,
+  });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const payload = {
-      ...form,
+    const payload: Warehouse = {
+      code: form.code,
+      name: form.name,
+      address: form.address || undefined,
       latitude:
-        form.latitude === "" ? null : Number(form.latitude),
+        form.latitude === "" ? undefined : Number(form.latitude),
       longitude:
-        form.longitude === "" ? null : Number(form.longitude),
+        form.longitude === ""
+          ? undefined
+          : Number(form.longitude),
+      isActive: form.isActive,
     };
 
     try {
-      if (isEdit && initialData) {
-        await updateWarehouse(initialData.id, {
-          ...payload,
-          address: payload.address ?? undefined,
-          latitude: payload.latitude ?? undefined,
-          longitude: payload.longitude ?? undefined
-        });
+      if (isEdit && initialData?.id) {
+        await updateWarehouse(initialData.id, payload);
         router.push(`/inventory/warehouses/${initialData.id}`);
       } else {
-        const created = await createWarehouse({
-          ...payload,
-          address: payload.address ?? undefined,
-          latitude: payload.latitude ?? undefined,
-          longitude: payload.longitude ?? undefined,
-        });
+        const created = await createWarehouse(payload);
         router.push(`/inventory/warehouses/${created.id}`);
       }
 
       router.refresh();
-    } catch (err) {
+    } catch {
       alert("Error saving warehouse");
     }
   }
@@ -74,19 +76,25 @@ export default function WarehouseForm({
           label="Code"
           value={form.code}
           disabled={isEdit}
-          onChange={(v) => setForm({ ...form, code: v })}
+          onChange={(v) =>
+            setForm({ ...form, code: v })
+          }
         />
 
         <Input
           label="Name"
           value={form.name}
-          onChange={(v) => setForm({ ...form, name: v })}
+          onChange={(v) =>
+            setForm({ ...form, name: v })
+          }
         />
 
         <Input
           label="Address"
           value={form.address}
-          onChange={(v) => setForm({ ...form, address: v })}
+          onChange={(v) =>
+            setForm({ ...form, address: v })
+          }
         />
 
         <Input
@@ -122,7 +130,6 @@ export default function WarehouseForm({
         </div>
       </div>
 
-      {/* Actions */}
       <div className="flex justify-end gap-3">
         <button
           type="button"
@@ -136,7 +143,9 @@ export default function WarehouseForm({
           type="submit"
           className="px-5 py-2.5 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 shadow"
         >
-          {isEdit ? "Update Warehouse" : "Create Warehouse"}
+          {isEdit
+            ? "Update Warehouse"
+            : "Create Warehouse"}
         </button>
       </div>
     </form>
@@ -150,17 +159,22 @@ function Input({
   disabled,
 }: {
   label: string;
-  value: any;
+  value: string;
   onChange: (v: string) => void;
   disabled?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-sm text-gray-500">{label}</label>
+      <label className="text-sm text-gray-500">
+        {label}
+      </label>
+
       <input
-        value={value ?? ""}
+        value={value}
         disabled={disabled}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) =>
+          onChange(e.target.value)
+        }
         className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </div>
