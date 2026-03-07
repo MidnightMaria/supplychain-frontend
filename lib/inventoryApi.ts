@@ -1,5 +1,5 @@
 const BASE_URL =
-  process.env.NEXT_PUBLIC_INVENTORY_API_URL || "http://localhost:8080";
+  process.env.NEXT_PUBLIC_INVENTORY_API || "http://inventory-service:8080";
 
 export async function getCentralInventory() {
   const res = await fetch(`${BASE_URL}/api/inventory/export`, {
@@ -32,9 +32,6 @@ export async function transferStock(data: {
   quantity: number;
   reference?: string;
 }) {
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_INVENTORY_API || "http://localhost:8080";
-
   const res = await fetch(`${BASE_URL}/api/inventory/transfer-stock`, {
     method: "POST",
     headers: {
@@ -51,27 +48,25 @@ export async function transferStock(data: {
 }
 
 export async function getWarehouses() {
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_INVENTORY_API || "http://localhost:8080";
-
   const res = await fetch(`${BASE_URL}/api/warehouses`, {
     cache: "no-store",
   });
 
-  if (!res.ok) throw new Error("Failed to fetch warehouses");
+  if (!res.ok) {
+    throw new Error("Failed to fetch warehouses");
+  }
 
   return res.json();
 }
 
 export async function getProducts() {
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_INVENTORY_API || "http://localhost:8080";
-
   const res = await fetch(`${BASE_URL}/api/products`, {
     cache: "no-store",
   });
 
-  if (!res.ok) throw new Error("Failed to fetch products");
+  if (!res.ok) {
+    throw new Error("Failed to fetch products");
+  }
 
   return res.json();
 }
@@ -84,9 +79,6 @@ export async function adjustStock(data: {
   movementType: string;
   referenceNumber?: string;
 }) {
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_INVENTORY_API || "http://localhost:8080";
-
   const res = await fetch(`${BASE_URL}/api/inventory/adjust-stock`, {
     method: "POST",
     headers: {

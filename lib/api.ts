@@ -1,12 +1,17 @@
-const API_URL =
+const DEFAULT_API =
   process.env.NEXT_PUBLIC_INVENTORY_API || "http://inventory-service:8080";
 
 export async function fetcher(url: string, options?: RequestInit) {
-  const res = await fetch(`${API_URL}${url}`, {
+
+  // if URL already absolute, use it directly
+  const fullUrl = url.startsWith("http") ? url : `${DEFAULT_API}${url}`;
+
+  const res = await fetch(fullUrl, {
     headers: {
       "Content-Type": "application/json",
     },
     ...options,
+    cache: "no-store",
   });
 
   if (!res.ok) {

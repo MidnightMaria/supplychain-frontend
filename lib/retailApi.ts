@@ -1,7 +1,12 @@
-const BASE_URL = process.env.NEXT_PUBLIC_RETAIL_API_URL!;
+const BASE_URL =
+  process.env.NEXT_PUBLIC_RETAIL_API || "http://retail-service:8081";
+
+/*
+Retail Warehouses
+*/
 
 export async function getRetailWarehouses() {
-  const res = await fetch(`${BASE_URL}/retail/warehouses`, {
+  const res = await fetch(`${BASE_URL}/api/retail/warehouses`, {
     cache: "no-store",
   });
 
@@ -14,18 +19,8 @@ export async function getRetailWarehouses() {
   return res.json();
 }
 
-export async function getProducts() {
-  const res = await fetch(`${BASE_URL}/products`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) throw new Error("Failed to fetch products");
-
-  return res.json();
-}
-
 export async function createRetailWarehouse(data: any) {
-  const res = await fetch(`${BASE_URL}/retail/warehouses`, {
+  const res = await fetch(`${BASE_URL}/api/retail/warehouses`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -40,18 +35,8 @@ export async function createRetailWarehouse(data: any) {
   return res.json();
 }
 
-export async function deleteRetailWarehouse(id: number) {
-  const res = await fetch(`${BASE_URL}/retail/warehouses/${id}`, {
-    method: "DELETE",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to delete warehouse");
-  }
-}
-
 export async function updateRetailWarehouse(id: number, data: any) {
-  const res = await fetch(`${BASE_URL}/retail/warehouses/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/retail/warehouses/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -66,18 +51,32 @@ export async function updateRetailWarehouse(id: number, data: any) {
   return res.json();
 }
 
+export async function deleteRetailWarehouse(id: number) {
+  const res = await fetch(`${BASE_URL}/api/retail/warehouses/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete warehouse");
+  }
+}
+
+/*
+Stock
+*/
+
 export async function getWarehouseStock(
   warehouseId: number,
   productId: number
 ) {
   try {
     const res = await fetch(
-      `${BASE_URL}/retail/warehouses/${warehouseId}/stock/${productId}`,
+      `${BASE_URL}/api/retail/warehouses/${warehouseId}/stock/${productId}`,
       { cache: "no-store" }
     );
 
     if (res.status === 404) {
-      return null; // belum ada stock → anggap 0
+      return null;
     }
 
     if (!res.ok) {
@@ -98,7 +97,7 @@ export async function setWarehouseStock(
   data: any
 ) {
   const res = await fetch(
-    `${BASE_URL}/retail/warehouses/${warehouseId}/stock`,
+    `${BASE_URL}/api/retail/warehouses/${warehouseId}/stock`,
     {
       method: "POST",
       headers: {
@@ -113,8 +112,26 @@ export async function setWarehouseStock(
   return res.json();
 }
 
+/*
+Products
+*/
+
+export async function getProducts() {
+  const res = await fetch(`${BASE_URL}/api/products`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch products");
+
+  return res.json();
+}
+
+/*
+Customers
+*/
+
 export async function getCustomers() {
-  const res = await fetch(`${BASE_URL}/customers`, {
+  const res = await fetch(`${BASE_URL}/api/customers`, {
     cache: "no-store",
   });
 
@@ -124,37 +141,43 @@ export async function getCustomers() {
 }
 
 export async function createCustomer(data: any) {
-  const res = await fetch(`${BASE_URL}/customers`, {
+  const res = await fetch(`${BASE_URL}/api/customers`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
 
   if (!res.ok) throw new Error("Failed to create customer");
+
   return res.json();
 }
 
 export async function updateCustomer(id: number, data: any) {
-  const res = await fetch(`${BASE_URL}/customers/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/customers/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
 
   if (!res.ok) throw new Error("Failed to update customer");
+
   return res.json();
 }
 
 export async function deleteCustomer(id: number) {
-  const res = await fetch(`${BASE_URL}/customers/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/customers/${id}`, {
     method: "DELETE",
   });
 
   if (!res.ok) throw new Error("Failed to delete customer");
 }
 
+/*
+Orders
+*/
+
 export async function getOrders() {
-  const res = await fetch(`${BASE_URL}/orders`, {
+  const res = await fetch(`${BASE_URL}/api/orders`, {
     cache: "no-store",
   });
 
@@ -165,7 +188,7 @@ export async function getOrders() {
 
 export async function createOrder(data: any, warehouseId: number) {
   const res = await fetch(
-    `${BASE_URL}/orders?warehouseId=${warehouseId}`,
+    `${BASE_URL}/api/orders?warehouseId=${warehouseId}`,
     {
       method: "POST",
       headers: {
@@ -180,12 +203,16 @@ export async function createOrder(data: any, warehouseId: number) {
   return res.json();
 }
 
+/*
+Restock
+*/
+
 export async function requestRestock(
   warehouseId: number,
   data: any
 ) {
   const res = await fetch(
-    `${BASE_URL}/retail/warehouses/${warehouseId}/stock/restock`,
+    `${BASE_URL}/api/retail/warehouses/${warehouseId}/stock/restock`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
