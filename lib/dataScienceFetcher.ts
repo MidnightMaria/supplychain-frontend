@@ -1,10 +1,8 @@
-const DEFAULT_API =
-  process.env.NEXT_PUBLIC_INVENTORY_API || "http://localhost:8080";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_DATA_SCIENCE_API || "http://localhost:8084";
 
-export async function fetcher(url: string, options?: RequestInit) {
-
-  // if URL already absolute, use it directly
-  const fullUrl = url.startsWith("http") ? url : `${DEFAULT_API}${url}`;
+export async function dataScienceFetcher(url: string, options?: RequestInit) {
+  const fullUrl = url.startsWith("http") ? url : `${BASE_URL}${url}`;
 
   const res = await fetch(fullUrl, {
     headers: {
@@ -16,7 +14,7 @@ export async function fetcher(url: string, options?: RequestInit) {
 
   if (!res.ok) {
     const text = await res.text();
-    console.error("API ERROR:", text);
+    console.error("DATA SCIENCE API ERROR:", text);
     throw new Error(`API Error ${res.status}`);
   }
 

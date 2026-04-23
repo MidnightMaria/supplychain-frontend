@@ -1,5 +1,5 @@
 const BASE_URL =
-  process.env.NEXT_PUBLIC_RETAIL_API || "http://retail-service:8081";
+  process.env.NEXT_PUBLIC_RETAIL_API || "http://localhost:8081";
 
 /*
 Retail Warehouses
